@@ -14,8 +14,8 @@
   let miss  // ミス格納
 
 
-  const playingTime = 3;
   const sleepTime = 3;
+  const playingTime = 10;
   const timeLimit = playingTime * 1000; // ミリ秒 * 1000
 
   let startTime = 0;
