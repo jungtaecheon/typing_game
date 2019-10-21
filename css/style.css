@@ -1,0 +1,72 @@
+body{
+  padding-top: 10px; /* 余白 */
+  font-family: 'Courier', monospace; /* フォント */
+  text-align: center; /* 文字の配置 */
+  background: white;
+}
+
+#target{
+  font-size: 60px; /* 文字サイズ */
+  letter-spacing: 3px; /* 文字空白 */
+  color: black;
+}
+
+#doneTarget{
+  font-size: 60px; /* 文字サイズ */
+  letter-spacing: 3px; /* 文字空白 */
+  color: #75A9FF;
+}
+
+.info{
+  font-size: 25px; /* 文字サイズ */
+  font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
+  color: gray; /* グレー */
+}
+
+/* ボタンの設定 */
+#darkButton{
+  width: 200px;
+  height: 40px;
+  font-size: 13px;
+}
+#normalButton{
+  width: 200px;
+  height: 40px;
+  font-size: 13px;
+}
+/* 丸み */
+.btn-right-radius {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  color: #00BCD4;
+  background: #ECECEC;
+  border-radius: 0 15px 15px 0;
+  transition: .4s;
+}
+
+.btn-right-radius:hover {
+  background: #636363;
+}
+
+/* 先端 */
+.btn-sf-like {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  text-decoration: none;
+  color: #FFF;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.73);
+  padding: 0.3em 0.5em;
+  background: #00bcd4;
+  border-top: solid 3px #00a3d4;
+  border-bottom: solid 3px #00a3d4;
+  transition: .4s;
+}
+
+.btn-sf-like:hover {
+  text-shadow: -6px 0px 15px rgba(255, 255, 240, 0.83),
+               6px 0px 15px rgba(255, 255, 240, 0.83);
+}

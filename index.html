@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Word Typing</title>
+
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <p class="info">
+      残り時間<br><span id="timer">0.00</span> 秒
+    </p>
+    <span id="doneTarget"></span><span id="target">Click to start</span>
+    <br><br>
+    <p class="info">
+      残り単語数 : <span id="wordCount">0</span> 個
+      <br><br>
+      正解 カウント : <span id="score">0</span> 文字
+      <br>
+      ミス カウント : <span id="miss">0</span> 文字
+    </p>
+
+    <br>
+    <!-- ダークモード -->
+    <form action="./index.html" method="get">
+      <div>
+        <input name="darkMode" value="true" type="hidden">
+      </div>
+      <div>
+        <button id="darkButton" class="btn-right-radius">「ダークモード」リロード</button>
+      </div>
+    </form>
+    <br>
+    <!-- ノーマルモード -->
+    <form action="./index.html" method="get">
+      <div>
+        <input name="darkMode" value="false" type="hidden">
+      </div>
+      <div>
+        <button id="normalButton" class="btn-right-radius">「ノーマルモード」リロード</button>
+      </div>
+    </form>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
