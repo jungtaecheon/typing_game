@@ -47,6 +47,7 @@
 
   const sleepTime = 3;
 
+  // 制限時間
   let playingTime = 30;
   if(getParameterByName("play_time") != null){
     playingTime = getParameterByName("play_time");
@@ -54,8 +55,16 @@
     const playTimeSelect = document.getElementById('playTimeSelect');
     playTimeSelect.value = playingTime;
   }
-
   const timeLimit = playingTime * 1000; // ミリ秒 * 1000
+
+  // 大文字小文字モード
+  let isUppercaseMode = false;
+  if(getParameterByName("case_mode") != null){
+    isUppercaseMode = getParameterByName("case_mode") === "upperCase" ? true : false;
+
+    const caseModeSelect = document.getElementById('caseModeSelect');
+    caseModeSelect.value = isUppercaseMode ? "upperCase" : "lowerCase";
+  }
 
   let startTime = 0;
   let isPlaying = false; // ゲーム開始フラグ(クリックするとtrueとなる)
@@ -66,8 +75,14 @@
   const doneTarget = document.getElementById('doneTarget');
   const scoreLabel = document.getElementById('score');
   const missLabel = document.getElementById('miss');
+
+  // 残り時間表示
   const timerLabel = document.getElementById('timer');
+  timerLabel.textContent = playingTime + ".00";
+
+  // 残り単語数表示
   const wordCountLabel = document.getElementById('wordCount');
+  wordCountLabel.textContent = words.length;
 
   const darkButton = document.getElementById('darkButton');
   const normalButton = document.getElementById('normalButton');
@@ -122,7 +137,12 @@
     word = words[Math.floor(Math.random() * words.length)];
 
     // タイピング単語を表示
-    target.textContent = word;
+    if(isUppercaseMode){
+      target.textContent = word.toUpperCase();
+    } else {
+      target.textContent = word;
+    }
+
     wordCountLabel.textContent = words.length;
 
     startTime = Date.now(); // Date.now 基準日から経過ミリ秒を計算
@@ -190,8 +210,13 @@
   function updateTarget(){
     /* substring(loc) 先頭から指定した文字数を削除する */
     wordCountLabel.textContent = words.length;
-    doneTarget.textContent += word.charAt(loc-1);
-    target.textContent = word.substring(loc);
+    if(isUppercaseMode){
+      doneTarget.textContent += word.charAt(loc-1).toUpperCase();
+      target.textContent = word.substring(loc).toUpperCase();
+    } else {
+      doneTarget.textContent += word.charAt(loc-1);
+      target.textContent = word.substring(loc);
+    }
   }
 
   /* 残り時間更新処理 */

@@ -21,7 +21,6 @@
       ミス カウント : <span id="miss">0</span> 文字
     </p>
 
-    <br>
     <!-- ダークモード -->
     <form action="./index.html" method="get">
       <div>
@@ -43,19 +42,37 @@
     </form>
 
     <br>
+    <br>
+    <br>
+    <br>
+    <hr>
+    <a class="info">ゲーム設定</a>
     <form action="./index.html" method="get">
-        <select name="play_time" id="playTimeSelect">
-          <option value=5>5 秒</option>
-          <option value=10>10 秒</option>
-          <option value=30>30 秒</option>
-          <option value=60>1 分</option>
-          <option value=90>1 分 30 秒</option>
-          <option value=120>2 分</option>
-          <option value=150>2 分 30 秒</option>
-          <option value=180>3 分</option>
-          <option value=30 selected>デフォルト: 30秒</option>
-        </select>
-        <button id="timeFormButton" class="btn-flat-stripe">制限時間を変更</button>
+      <hr>
+
+      制限時間
+      <br>
+      <select name="play_time" id="playTimeSelect" class="round">
+        <option value=5>5秒</option>
+        <option value=10>10秒</option>
+        <option value=30 selected>30秒</option>
+        <option value=60>1分</option>
+        <option value=90>1分 30秒</option>
+        <option value=120>2分</option>
+        <option value=150>2分 30秒</option>
+        <option value=180>3分</option>
+      </select>
+
+      <hr>
+      大文字/小文字
+      <br>
+      <select name="case_mode" id="caseModeSelect" class="round">
+        <option value="lowerCase" selected>小文字</option>
+        <option value="upperCase">大文字</option>
+      </select>
+      <hr>
+
+      <button id="timeFormButton" class="btn-flat-horizontal-border">設定を変更する</button>
     </form>
 
     <script src="js/main.js"></script>
