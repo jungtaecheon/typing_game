@@ -111,9 +111,9 @@
   // タイピング対象の一覧作成
   for(var i=0; i<words.length; i++){
     // 一覧
-    var option_word = document.createElement("option");
-    option_word.text = words[i];
-    targetWordList.appendChild(option_word);
+    var tr_word = document.createElement("tr");
+    tr_word.textContent = words[i];
+    targetWordList.appendChild(tr_word);
   }
 
 
