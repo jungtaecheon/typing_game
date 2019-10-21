@@ -81,17 +81,19 @@
     'loop',
   ];
 
-  // タイピング対象の単語数を選択できるようにselectを作成
   const targetWordCount = document.getElementById('targetWordCount');
-  for(var i=1; i<=defaultWords.length; i++){
-    var option = document.createElement("option");
-    // optionタグのテキストを設定する
-    option.text = i;
-    // optionタグのvalueを設定する
-    option.value = i;
-    targetWordCount.appendChild(option);
-  }
+  const targetWordList = document.getElementById('targetWordList');
 
+  // 順番に注意
+  // タイピング対象の単語数を選択できるようにselectを作成
+  for(var i=0; i<defaultWords.length; i++){
+    var option_count = document.createElement("option");
+    // optionタグのテキストを設定する
+    option_count.text = i+1;
+    // optionタグのvalueを設定する
+    option_count.value = i+1;
+    targetWordCount.appendChild(option_count);
+  }
   // 対象のwordsを生成
   let words = new Array();
   if(getParameterByName("target_word_count") != null){
@@ -106,6 +108,14 @@
   } else {
     words = defaultWords;
   }
+  // タイピング対象の一覧作成
+  for(var i=0; i<words.length; i++){
+    // 一覧
+    var option_word = document.createElement("option");
+    option_word.text = words[i];
+    targetWordList.appendChild(option_word);
+  }
+
 
   // デバッグ
   console.log(words);
@@ -182,6 +192,10 @@
     var infoClass = document.getElementsByClassName("info");
     for(var i=0;i<infoClass.length;i++){
       infoClass[i].style.color = "#DDDDDD";
+    }
+    var infoBigClass = document.getElementsByClassName("infoBig");
+    for(var i=0;i<infoBigClass.length;i++){
+      infoBigClass[i].style.color = "#DDDDDD";
     }
   }
 

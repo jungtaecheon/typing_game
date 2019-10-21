@@ -18,7 +18,13 @@ body{
 }
 
 .info{
-  font-size: 20px; /* 文字サイズ */
+  font-size: 17px; /* 文字サイズ */
+  font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
+  color: gray; /* グレー */
+}
+
+.infoBig{
+  font-size: 25px; /* 文字サイズ */
   font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
   color: gray; /* グレー */
 }
