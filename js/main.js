@@ -1,12 +1,43 @@
 'use strict'; // 厳密なエラーチェックを行う
 
 {
+  // GETパラメータ取得
+  var getParameterByName = function(name) {
+      var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+      return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+  }
+
   let words = [
-    'apple',
-    'sky',
+    'index',
+    'import',
     'result',
     'continue',
     'return',
+    'configuration',
+    'edit',
+    'highlight',
+    'merge',
+    'query',
+    'specify',
+    'upload',
+    'range',
+    'position',
+    'override',
+    'network',
+    'module',
+    'manager',
+    'location',
+    'label',
+    'interface',
+    'item',
+    'layout',
+    'normal',
+    'parameter',
+    'public',
+    'private',
+    'recommend',
+    'record',
+    'remove',
   ];
   let word = words[Math.floor(Math.random() * words.length)];
   let loc  // 変数宣言
@@ -15,11 +46,18 @@
 
 
   const sleepTime = 3;
-  const playingTime = 10;
+
+  let playingTime = 30;
+  if(getParameterByName("play_time") != null){
+    playingTime = getParameterByName("play_time");
+
+    const playTimeSelect = document.getElementById('playTimeSelect');
+    playTimeSelect.value = playingTime;
+  }
+
   const timeLimit = playingTime * 1000; // ミリ秒 * 1000
 
   let startTime = 0;
-
   let isPlaying = false; // ゲーム開始フラグ(クリックするとtrueとなる)
   let isSleepMode = false;
   let isNoMoreWord = false;
@@ -34,15 +72,9 @@
   const darkButton = document.getElementById('darkButton');
   const normalButton = document.getElementById('normalButton');
 
-  // GETパラメータ取得
-  var getParameterByName = function(name) {
-      var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-      return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-  }
-
   // ダークモード
-  // GETパラメーターに「darkMode=true」を付与すると実行される
-  if(getParameterByName("darkMode") === "true"){
+  // GETパラメーターに「dark_mode=true」を付与すると実行される
+  if(getParameterByName("dark_mode") === "true"){
     target.style.color = "white";
     doneTarget.style.color = "#00FF00";
     document.body.style.background = "#000000";
@@ -97,21 +129,10 @@
     updateTimer();
   }
 
-  // モード切替
-  var modeChange = false;
-  darkButton.addEventListener('click', () => {
-    modeChange = true;
-    return;
-  });
-  normalButton.addEventListener('click', () => {
-    modeChange = true;
-    return;
-  });
-
   // クリックイベント
-  window.addEventListener('click', () => {
+  target.addEventListener('click', () => {
     // プレイ中のクリック、もしくは、モード切り替えのためのクリックは無効
-    if(isPlaying === true || modeChange){
+    if(isPlaying === true){
       return;
     }
 
@@ -196,7 +217,7 @@
       clearTimeout(timeoutId);
       doneTarget.textContent = "";
       timerLabel.textContent = '0.00';
-      target.textContent = 'Click to continue';
+      target.textContent = 'Click here to continue..';
     }
   }
 
@@ -211,7 +232,7 @@
       results = "時間切れです。";
     }
     // alert(``)でないとscore等の数値が表示されないため注意。alert('')だと文字がそのまま表示される
-    alert(`${results}\n=== 結果 ===\n残り単語: ${words.length}個\n正解: ${score}文字\nミス: ${miss}文字\n正確度: ${accuracy.toFixed(2)}%`);
+    alert(`${results}\n\n=== 結果 ===\n残り単語: ${words.length}個\n正解: ${score}文字\nミス: ${miss}文字\n正確度: ${accuracy.toFixed(2)}%`);
   }
 
 }

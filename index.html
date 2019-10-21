@@ -10,7 +10,8 @@
     <p class="info">
       残り時間<br><span id="timer">0.00</span> 秒
     </p>
-    <span id="doneTarget"></span><span id="target">Click to start</span>
+
+    <span id="doneTarget"></span><span id="target">Click here to start!</span>
     <br><br>
     <p class="info">
       残り単語数 : <span id="wordCount">0</span> 個
@@ -24,7 +25,7 @@
     <!-- ダークモード -->
     <form action="./index.html" method="get">
       <div>
-        <input name="darkMode" value="true" type="hidden">
+        <input name="dark_mode" value="true" type="hidden">
       </div>
       <div>
         <button id="darkButton" class="btn-right-radius">「ダークモード」リロード</button>
@@ -34,11 +35,27 @@
     <!-- ノーマルモード -->
     <form action="./index.html" method="get">
       <div>
-        <input name="darkMode" value="false" type="hidden">
+        <input name="dark_mode" value="false" type="hidden">
       </div>
       <div>
         <button id="normalButton" class="btn-right-radius">「ノーマルモード」リロード</button>
       </div>
+    </form>
+
+    <br>
+    <form action="./index.html" method="get">
+        <select name="play_time" id="playTimeSelect">
+          <option value=5>5 秒</option>
+          <option value=10>10 秒</option>
+          <option value=30>30 秒</option>
+          <option value=60>1 分</option>
+          <option value=90>1 分 30 秒</option>
+          <option value=120>2 分</option>
+          <option value=150>2 分 30 秒</option>
+          <option value=180>3 分</option>
+          <option value=30 selected>デフォルト: 30秒</option>
+        </select>
+        <button id="timeFormButton" class="btn-flat-stripe">制限時間を変更</button>
     </form>
 
     <script src="js/main.js"></script>
