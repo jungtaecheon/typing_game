@@ -28,61 +28,68 @@
   });
   // bar.animate(0.7);
 
-  let defaultWords = [
-    'index',
-    'import',
-    'result',
-    'continue',
-    'return',
-    'configuration',
-    'edit',
-    'highlight',
-    'merge',
-    'query',
-    'specify',
-    'upload',
-    'range',
-    'position',
-    'override',
-    'network',
-    'module',
-    'manager',
-    'location',
-    'label',
-    'interface',
-    'item',
-    'layout',
-    'normal',
-    'parameter',
-    'public',
-    'private',
-    'recommend',
-    'record',
-    'remove',
-    'commit',
-    'cookie',
-    'define',
-    'domain',
-    'error',
-    'fail',
-    'fix',
-    'global',
-    'host',
-    'hide',
-    'icon',
-    'instance',
-    'integer',
-    'issue',
-    'level',
-    'local',
-    'lock',
-    'log',
-    'login',
-    'loop',
-  ];
+  let defaultWords = new Array();
+
+  let defaultWordHash = {
+    "index": "インデックス、索引",
+    "import": "インポート／インポートする",
+    "result": "結果",
+    "continue": "続行する",
+    "return": "戻す、返す",
+    "configuration": "構成",
+    "edit": "編集する",
+    "highlight": "ハイライト／強調表示する",
+    "merge": "マージする、統合する",
+    "query": "クエリー",
+    "specify": "指定する",
+    "upload": "アップロードする／アップロード",
+    "range": "範囲",
+    "position": "位置",
+    "override": "オーバーライドする、優先する",
+    "network": "ネットワーク",
+    "module": "モジュール",
+    "manager": "マネージャー",
+    "location": "位置、場所",
+    "label": "ラベル／ラベルを貼る",
+    "interface": "インターフェイス",
+    "item": "項目",
+    "layout": "	レイアウト",
+    "normal": "標準の",
+    "parameter": "パラメーター、仮引数",
+    "public": "公開の",
+    "private": "プライベートな、非公開の",
+    "recommend": "推奨する",
+    "record": "記録する／記録、レコード",
+    "remove": "削除する",
+    "commit": "コミットする、（処理などを）確定する",
+    "cookie": "クッキー",
+    "define": "定義する",
+    "domain": "ドメイン",
+    "error": "エラー",
+    "fail": "失敗する",
+    "fix": "修正する、解決する",
+    "global": "グローバルな、大域の",
+    "host": "ホスト",
+    "hide": "隠す、非表示にする",
+    "icon": "アイコン",
+    "instance": "インスタンス、実例",
+    "integer": "整数",
+    "issue": "問題点",
+    "level": "レベル、水準",
+    "library": "ライブラリー",
+    "license": "ライセンス／ライセンス供与する",
+    "log": "ログ／ログを取る",
+    "login": "ログイン",
+    "loop": "ループ",
+  };
+  // インデックスを使うとき
+  // const defaultWordHashKeys = Object.keys(defaultWordHash);
+  for (var key in defaultWordHash) {
+      defaultWords.push(key);
+  }
 
   const targetWordCount = document.getElementById('targetWordCount');
-  const targetWordList = document.getElementById('targetWordList');
+  const targetWordTable = document.getElementById('targetWordTable');
 
   // 順番に注意
   // タイピング対象の単語数を選択できるようにselectを作成
@@ -110,10 +117,17 @@
   }
   // タイピング対象の一覧作成
   for(var i=0; i<words.length; i++){
-    // 一覧
     var tr_word = document.createElement("tr");
-    tr_word.textContent = words[i];
-    targetWordList.appendChild(tr_word);
+    var td_eng_lower = document.createElement("td");
+    var td_eng_upper = document.createElement("td");
+    var td_ja = document.createElement("td");
+    td_eng_lower.textContent = words[i];
+    td_eng_upper.textContent = words[i].toUpperCase();
+    td_ja.textContent = defaultWordHash[words[i]];
+    tr_word.appendChild(td_eng_lower);
+    tr_word.appendChild(td_eng_upper);
+    tr_word.appendChild(td_ja);
+    targetWordTable.appendChild(tr_word);
   }
 
 
