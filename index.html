@@ -5,80 +5,109 @@
     <title>Word Typing</title>
 
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/master/dist/progressbar.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
     <p class="info">
       残り時間 (Left Time)<br><span id="timer">0.00</span> 秒 (sec)
     </p>
 
-    <span id="doneTarget"></span><span id="target">Click here to start!</span>
-    <br><br>
+    <span id="doneTarget"></span><span id="target">click here to start!</span>
+    <div id="progressBar"></div>
+
     <p class="info">
-      残り単語数 : <span id="wordCount">0</span> 個
-      <br><br>
-      速度 (Speed) : <span id="speed_CPM">0.00</span> CPM / <span id="speed_WPM">0.00</span> WPM
+      残った単語 : <span id="wordLeftCount">0</span> 個
       <br>
-      正解 (Correct) : <span id="score">0</span> 文字
+      クリアした単語 : <span id="wordClearCount">0</span> 個
       <br>
-      ミス (Miss) : <span id="miss">0</span> 文字
+      <br>
+      正解 : <span id="score">0</span> 文字
+      <br>
+      ミス : <span id="miss">0</span> 文字
+      <br>
+      <br>
+      CPM (1分あたりの文字数) : <span id="speed_CPM">0.00</span>
+      <br>
+      WPM (1分あたりの単語数) : <span id="speed_WPM">0.00</span>
     </p>
 
-    <!-- ダークモード -->
-    <form action="./index.html" method="get">
-      <div>
-        <input name="dark_mode" value="true" type="hidden">
-      </div>
-      <div>
-        <button id="darkButton" class="btn-right-radius">「ダークモード」リロード</button>
-      </div>
-    </form>
-    <br>
-    <!-- ノーマルモード -->
-    <form action="./index.html" method="get">
-      <div>
-        <input name="dark_mode" value="false" type="hidden">
-      </div>
-      <div>
-        <button id="normalButton" class="btn-right-radius">「ノーマルモード」リロード</button>
-      </div>
-    </form>
+    <a id="openModal" href="javascript:void(0);" class="btn-sf-like">設定画面を開く</a>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <hr>
-    <a class="info">ゲーム設定 (Game Setting)</a>
-    <form action="./index.html" method="get">
-      <hr>
-      <div>
-        <input id="game_setting_0" name="dark_mode" value="false" type="hidden">
+    <!-- モーダルエリアここから -->
+    <section id="modalArea" class="modalArea">
+      <div id="modalBg" class="modalBg"></div>
+      <div class="modalWrapper">
+
+        <a>ゲーム設定 (Game Settings)</a>
+        <hr>
+        <!-- ダークモード -->
+        <a>リロード</a>
+        <br>
+        <form action="./index.html" method="get">
+          <div>
+            <input name="dark_mode" value="true" type="hidden">
+          </div>
+          <div>
+            <button id="darkButton" class="btn-right-radius">ダークモードに切り替える</button>
+          </div>
+        </form>
+        <br>
+        <!-- ノーマルモード -->
+        <form action="./index.html" method="get">
+          <div>
+            <input name="dark_mode" value="false" type="hidden">
+          </div>
+          <div>
+            <button id="normalButton" class="btn-right-radius">ノーマルモードに切り替える</button>
+          </div>
+        </form>
+        <br>
+
+        <form action="./index.html" method="get">
+          <hr>
+          <div>
+            <input id="game_setting_0" name="dark_mode" value="false" type="hidden">
+          </div>
+
+          <a id="game_setting_1">制限時間</a>
+          <br>
+          <select name="play_time" id="playTimeSelect" class="round">
+            <option value=5>5秒(sec)</option>
+            <option value=10>10秒(sec)</option>
+            <option value=30 selected>30秒(sec)</option>
+            <option value=60>1分(min)</option>
+            <option value=90>1分(min) 30秒(sec)</option>
+            <option value=120>2分(min)</option>
+            <option value=150>2分(min) 30秒(sec)</option>
+            <option value=180>3分(min)</option>
+          </select>
+
+          <br>
+          <br>
+
+          <a id="game_setting_2">大文字/小文字</a>
+          <br>
+          <select name="case_mode" id="caseModeSelect" class="round">
+            <option value="lowerCase" selected>小文字(LowerCase)</option>
+            <option value="upperCase">大文字(UpperCase)</option>
+          </select>
+
+          <br>
+          <br>
+          <br>
+
+          <button id="timeFormButton" class="btn-flat-horizontal-border">てきよう (Apply Settings)</button>
+          <br>
+          <br>
+        </form>
+
+        <div id="closeModal" class="closeModal">
+          ×
+        </div>
       </div>
-
-      <a id="game_setting_1">制限時間 (Limit Time)</a>
-      <br>
-      <select name="play_time" id="playTimeSelect" class="round">
-        <option value=5>5秒(sec)</option>
-        <option value=10>10秒(sec)</option>
-        <option value=30 selected>30秒(sec)</option>
-        <option value=60>1分(min)</option>
-        <option value=90>1分(min) 30秒(sec)</option>
-        <option value=120>2分(min)</option>
-        <option value=150>2分(min) 30秒(sec)</option>
-        <option value=180>3分(min)</option>
-      </select>
-
-      <hr>
-      <a id="game_setting_2">大文字/小文字 (UpperCase/LowerCase)</a>
-      <br>
-      <select name="case_mode" id="caseModeSelect" class="round">
-        <option value="lowerCase" selected>小文字(LowerCase)</option>
-        <option value="upperCase">大文字(UpperCase)</option>
-      </select>
-      <hr>
-
-      <button id="timeFormButton" class="btn-flat-horizontal-border">設定を変更する (Change Setting)</button>
-    </form>
+    </section>
+    <!-- モーダルエリアここまで -->
 
     <script src="js/main.js"></script>
   </body>

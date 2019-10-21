@@ -1,11 +1,33 @@
 'use strict'; // 厳密なエラーチェックを行う
-
 {
+  // モーダル画面の表示・非表示
+  $(function () {
+    $('#openModal').click(function(){
+        $('#modalArea').fadeIn();
+    });
+    $('#closeModal , #modalBg').click(function(){
+      $('#modalArea').fadeOut();
+    });
+  });
+
   // GETパラメータ取得
   var getParameterByName = function(name) {
       var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
       return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
   }
+
+  // プログレスバーjs
+  var bar = new ProgressBar.Line(progressBar, {
+    strokeWidth: 3,
+    easing: 'easeOut',
+    duration: 1000,
+    color: '#FFEA82',
+    trailColor: '#eee',
+    trailWidth: 1,
+    svgStyle: {width: '100%', height: '100%'}
+  });
+
+  // bar.animate(0.7);
 
   let words = [
     'index',
@@ -38,7 +60,28 @@
     'recommend',
     'record',
     'remove',
+    'commit',
+    'cookie',
+    'define',
+    'domain',
+    'error',
+    'fail',
+    'fix',
+    'global',
+    'host',
+    'hide',
+    'icon',
+    'instance',
+    'integer',
+    'issue',
+    'level',
+    'local',
+    'lock',
+    'log',
+    'login',
+    'loop',
   ];
+
   let word = words[Math.floor(Math.random() * words.length)];
   let loc  // 変数宣言
   let score  // スコア格納
@@ -74,6 +117,11 @@
   let isNoMoreWord = false;
 
   const target = document.getElementById('target');
+  if(isUppercaseMode){
+    // 大文字モードは最初の画面の文字も大文字にする。
+    target.textContent = target.textContent.toUpperCase();
+  }
+
   const doneTarget = document.getElementById('doneTarget');
   const speedCPMLabel = document.getElementById('speed_CPM');
   const speedWPMLabel = document.getElementById('speed_WPM');
@@ -85,8 +133,11 @@
   timerLabel.textContent = playingTime + ".00";
 
   // 残り単語数表示
-  const wordCountLabel = document.getElementById('wordCount');
-  wordCountLabel.textContent = words.length;
+  const wordLeftCountLabel = document.getElementById('wordLeftCount');
+  wordLeftCountLabel.textContent = words.length;
+
+  // クリアした単語数
+  const wordClearCountLabel = document.getElementById('wordClearCount');
 
   const darkButton = document.getElementById('darkButton');
   const normalButton = document.getElementById('normalButton');
@@ -99,8 +150,6 @@
     document.body.style.background = "#000000";
 
     document.getElementById("game_setting_0").value = true;
-    document.getElementById("game_setting_1").style.color = "white";
-    document.getElementById("game_setting_2").style.color = "white";
 
     var infoClass = document.getElementsByClassName("info");
     for(var i=0;i<infoClass.length;i++){
@@ -156,10 +205,15 @@
       target.textContent = word;
     }
 
-    wordCountLabel.textContent = words.length;
-
     startTime = Date.now(); // Date.now 基準日から経過ミリ秒を計算
+    // スタート時の単語の数
     startWorsLengs = words.length;
+
+    wordLeftCountLabel.textContent = words.length;
+    wordClearCountLabel.textContent = startWorsLengs - words.length;
+
+    bar.animate(0);
+
     updateTimer();
   }
 
@@ -191,13 +245,18 @@
     }
 
     // console.log(e.key); // デバッグ用処理(コンソールに入力結果を表示)
+    // １文字正解
     if(e.key === word[loc]){
       // console.log('score'); // デバッグ用処理(コンソールにscoreと表示)
       loc++;
+      // １単語正解
       if(loc === word.length){
         // 正解した単語は削除する
         words.splice(words.indexOf(word), 1);
-        wordCountLabel.textContent = words.length;
+        wordLeftCountLabel.textContent = words.length;
+        wordClearCountLabel.textContent = startWorsLengs - words.length;
+
+        bar.animate((startWorsLengs - words.length) / startWorsLengs);
 
         // 用意されている単語をすべて正解した場合は終了する。
         if(words.length == 0){
@@ -214,7 +273,7 @@
       score++;
       scoreLabel.textContent = score;
       updateTarget();
-    }else{
+    } else {
       miss++;
       missLabel.textContent = miss;
       // console.log('miss'); // デバッグ用処理(コンソールにmissと表示)
@@ -223,7 +282,6 @@
 
   function updateTarget(){
     /* substring(loc) 先頭から指定した文字数を削除する */
-    wordCountLabel.textContent = words.length;
     if(isUppercaseMode){
       doneTarget.textContent += word.charAt(loc-1).toUpperCase();
       target.textContent = word.substring(loc).toUpperCase();
@@ -256,14 +314,19 @@
       isPlaying = false;
 
       // 画面の更新を100ミリ秒遅らせる。遅らせることでタイマーが0秒になったら表示される
+      // 画面の更新を1000ミリ秒遅らせる。遅らせることでプログレスバーがMAXまで表示される
       setTimeout(() => {
         showResult();
-      }, 100);
+      }, 1000);
 
       clearTimeout(timeoutId);
       doneTarget.textContent = "";
       timerLabel.textContent = '0.00';
-      target.textContent = 'Click here to continue..';
+      target.textContent = 'click here to continue..';
+      if(isUppercaseMode){
+        // 大文字モードの場合は、説明も大文字で表示。
+        target.textContent = target.textContent.toUpperCase();
+      }
     }
   }
 
@@ -273,9 +336,9 @@
     const accuracy = score + miss === 0 ? 0 : score / (score + miss) * 100;
     let results;
     if(words.length == 0){
-      results = "おめでとうございます！すべての単語をクリアしました。";
+      results = "おめでとうございます！！\nすべての単語をクリアしました。";
     } else {
-      results = "時間切れです。";
+      results = "残念！\n時間切れです。";
     }
     // alert(``)でないとscore等の数値が表示されないため注意。alert('')だと文字がそのまま表示される
     alert(`${results}\n\n=== 結果 ===\nクリアした単語: ${startWorsLengs-words.length}個\n正解: ${score}文字\nミス: ${miss}文字\n正確度: ${accuracy.toFixed(2)}%\nタイピング速度: ${speedCPM} CPM / ${speedWPM} WPM`);
