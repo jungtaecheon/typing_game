@@ -94,6 +94,7 @@
     doneTarget.style.color = "#00FF00";
     document.body.style.background = "#000000";
 
+    document.getElementById("game_setting_0").value = true;
     document.getElementById("game_setting_1").style.color = "white";
     document.getElementById("game_setting_2").style.color = "white";
 
