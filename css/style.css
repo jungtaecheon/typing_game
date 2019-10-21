@@ -1,6 +1,6 @@
 body{
   padding-top: 5px; /* 余白 */
-  font-family: 'Courier New', monospace; /* フォント */
+  font-family: 'Courier', monospace; /* フォント */
   text-align: center; /* 文字の配置 */
   background: white;
 }
@@ -26,6 +26,7 @@ body{
 .infoBig{
   font-size: 25px; /* 文字サイズ */
   font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
+  font-weight: bold;
   color: gray; /* グレー */
 }
 
@@ -270,6 +271,8 @@ table tr{
 
 table tr:hover{
   background-color: #d4f0fd;
+  color: #00DD00;
+  font-weight: bold;
 }
 
 table th,table td{
