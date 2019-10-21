@@ -88,7 +88,7 @@
       defaultWords.push(key);
   }
 
-  const targetWordCount = document.getElementById('targetWordCount');
+  const targetWordCountSelect = document.getElementById('targetWordCountSelect');
   const targetWordTable = document.getElementById('targetWordTable');
 
   // 順番に注意
@@ -99,7 +99,7 @@
     option_count.text = i+1;
     // optionタグのvalueを設定する
     option_count.value = i+1;
-    targetWordCount.appendChild(option_count);
+    targetWordCountSelect.appendChild(option_count);
   }
   // 対象のwordsを生成
   let words = new Array();
@@ -111,10 +111,12 @@
       defaultWords.splice(randomCount, 1);
     }
 
-    targetWordCount.value = getParameterByName("target_word_count");
+    targetWordCountSelect.value = getParameterByName("target_word_count");
   } else {
     words = defaultWords;
+    targetWordCountSelect.value = targetWordCountSelect.length;
   }
+
   // タイピング対象の一覧作成
   for(var i=0; i<words.length; i++){
     var tr_word = document.createElement("tr");
