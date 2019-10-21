@@ -26,10 +26,9 @@
     trailWidth: 1,
     svgStyle: {width: '100%', height: '100%'}
   });
-
   // bar.animate(0.7);
 
-  let words = [
+  let defaultWords = [
     'index',
     'import',
     'result',
@@ -81,6 +80,35 @@
     'login',
     'loop',
   ];
+
+  // タイピング対象の単語数を選択できるようにselectを作成
+  const targetWordCount = document.getElementById('targetWordCount');
+  for(var i=1; i<=defaultWords.length; i++){
+    var option = document.createElement("option");
+    // optionタグのテキストを設定する
+    option.text = i;
+    // optionタグのvalueを設定する
+    option.value = i;
+    targetWordCount.appendChild(option);
+  }
+
+  // 対象のwordsを生成
+  let words = new Array();
+  if(getParameterByName("target_word_count") != null){
+    // words の length が target_word_count になるまでランダムに追加
+    while(words.length < getParameterByName("target_word_count")){
+      const randomCount = Math.floor(Math.random() * defaultWords.length);
+      words.push(defaultWords[randomCount]);
+      defaultWords.splice(randomCount, 1);
+    }
+
+    targetWordCount.value = getParameterByName("target_word_count");
+  } else {
+    words = defaultWords;
+  }
+
+  // デバッグ
+  console.log(words);
 
   let word = words[Math.floor(Math.random() * words.length)];
   let loc  // 変数宣言
