@@ -93,6 +93,10 @@
     target.style.color = "white";
     doneTarget.style.color = "#00FF00";
     document.body.style.background = "#000000";
+
+    document.getElementById("game_setting_1").style.color = "white";
+    document.getElementById("game_setting_2").style.color = "white";
+
     var infoClass = document.getElementsByClassName("info");
     for(var i=0;i<infoClass.length;i++){
       infoClass[i].style.color = "#DDDDDD";
