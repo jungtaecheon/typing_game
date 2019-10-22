@@ -32,7 +32,7 @@
     {"name":"index", "yomi":"インデックス", "meaninig":"インデックス、索引"},
     {"name":"import", "yomi":"インポート", "meaninig":"インポート／インポートする"},
     {"name":"result", "yomi":"リザルト", "meaninig":"結果"},
-    {"name":"continue", "yomi":"コティニュー", "meaninig":"続行する"},
+    {"name":"continue", "yomi":"コンティニュー", "meaninig":"続行する"},
     {"name":"return", "yomi":"リターン", "meaninig":"戻す、返す"},
     {"name":"configuration", "yomi":"コンフィグレーション", "meaninig":"構成"},
     {"name":"edit", "yomi":"エディット", "meaninig":"編集する"},
