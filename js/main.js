@@ -267,6 +267,7 @@
     speedWPM = 0;
     miss = 0;
     accuracy = 0;
+    timerLabel.textContent = '0.00';
     scoreLabel.textContent = score;
     speedCPMLabel.textContent = speedCPM;
     speedWPMLabel.textContent = speedWPM;
@@ -415,7 +416,6 @@
       clearTimeout(timeoutId);
       doneTarget.textContent = "";
       targetMeaning.textContent = "";
-      timerLabel.textContent = '0.00';
       target.textContent = 'click here to continue..';
       if(isUppercaseMode){
         // 大文字モードの場合は、説明も大文字で表示。
