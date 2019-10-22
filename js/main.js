@@ -141,6 +141,7 @@
   let loc  // 変数宣言
   let score  // スコア格納
   let miss  // ミス格納
+  let accuracy  // 正確度
   let speedCPM  // 速度
   let speedWPM  // 速度
 
@@ -183,6 +184,7 @@
   const speedWPMLabel = document.getElementById('speed_WPM');
   const scoreLabel = document.getElementById('score');
   const missLabel = document.getElementById('miss');
+  const accuracyLabel = document.getElementById('accuracy');
 
   // 残り時間表示
   const timerLabel = document.getElementById('timer');
@@ -253,9 +255,11 @@
     speedCPM = 0;
     speedWPM = 0;
     miss = 0;
+    accuracy = 0;
     scoreLabel.textContent = score;
     speedCPMLabel.textContent = speedCPM;
     speedWPMLabel.textContent = speedWPM;
+    accuracyLabel.textContent = accuracy;
     missLabel.textContent = miss;
     const initRandom = Math.floor(Math.random() * fullWordHash.length);
     word = fullWordHash[initRandom].name;
@@ -331,6 +335,9 @@
           isNoMoreWord = true;
           score++;
           scoreLabel.textContent = score;
+          // 正確度を都度チェック
+          accuracy = (score + miss === 0 ? 0 : score / (score + miss) * 100).toFixed(2);
+          accuracyLabel.textContent = accuracy;
           return;
         }
 
@@ -348,6 +355,10 @@
       missLabel.textContent = miss;
       // console.log('miss'); // デバッグ用処理(コンソールにmissと表示)
     }
+
+    // 正確度を都度チェック
+    accuracy = (score + miss === 0 ? 0 : score / (score + miss) * 100).toFixed(2);
+    accuracyLabel.textContent = accuracy;
   });
 
   function updateTarget(){
@@ -405,7 +416,7 @@
   /* 結果表示処理 */
   function showResult(){
     // 正答率算出 未入力時に分母が0になるため、0の時は正答率を0として表示する
-    const accuracy = score + miss === 0 ? 0 : score / (score + miss) * 100;
+    accuracy = (score + miss === 0 ? 0 : score / (score + miss) * 100).toFixed(2);
     let results;
     if(fullWordHash.length == 0){
       results = "おめでとうございます！！\nすべての単語をクリアしました。";
