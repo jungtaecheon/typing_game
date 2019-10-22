@@ -28,24 +28,26 @@
   });
   // bar.animate(0.7);
 
-  let defaultWords = new Array();
+  let fullWordHash = [
+    {"name":"index", "yomi":"インデックス", "meaninig":"インデックス、索引"},
+    {"name":"import", "yomi":"インポート", "meaninig":"インポート／インポートする"},
+    {"name":"result", "yomi":"リザルト", "meaninig":"結果"},
+    {"name":"continue", "yomi":"コティニュー", "meaninig":"続行する"},
+    {"name":"return", "yomi":"リターン", "meaninig":"戻す、返す"},
+    {"name":"configuration", "yomi":"コンフィグレーション", "meaninig":"構成"},
+    {"name":"edit", "yomi":"エディット", "meaninig":"編集する"},
+    {"name":"highlight", "yomi":"ハイライト", "meaninig":"ハイライト／強調表示する"},
+    {"name":"merge", "yomi":"マージ", "meaninig":"マージする、統合する"},
+    {"name":"query", "yomi":"クエリー", "meaninig":"クエリー"},
+    {"name":"specify", "yomi":"スペシファイ", "meaninig":"指定する"},
+    {"name":"upload", "yomi":"アップロード", "meaninig":"アップロードする／アップロード"},
+    {"name":"range", "yomi":"レンジ", "meaninig":"範囲"},
+    {"name":"position", "yomi":"ポジション", "meaninig":"位置"},
+    {"name":"override", "yomi":"オーバーライド", "meaninig":"オーバーライドする、優先する"},
+  ];
 
+  // もう使わないHashに移行する
   let defaultWordHash = {
-    "index": "インデックス、索引",
-    "import": "インポート／インポートする",
-    "result": "結果",
-    "continue": "続行する",
-    "return": "戻す、返す",
-    "configuration": "構成",
-    "edit": "編集する",
-    "highlight": "ハイライト／強調表示する",
-    "merge": "マージする、統合する",
-    "query": "クエリー",
-    "specify": "指定する",
-    "upload": "アップロードする／アップロード",
-    "range": "範囲",
-    "position": "位置",
-    "override": "オーバーライドする、優先する",
     "network": "ネットワーク",
     "module": "モジュール",
     "manager": "マネージャー",
@@ -84,6 +86,8 @@
   };
   // インデックスを使うとき
   // const defaultWordHashKeys = Object.keys(defaultWordHash);
+
+  let defaultWords = new Array();
   for (var key in defaultWordHash) {
       defaultWords.push(key);
   }
@@ -92,8 +96,8 @@
   const targetWordTable = document.getElementById('targetWordTable');
 
   // 順番に注意
-  // タイピング対象の単語数を選択できるようにselectを作成
-  for(var i=0; i<defaultWords.length; i++){
+  // タイピング対象の単語数を選択できるようにselectを作成（すべての単語の数）
+  for(var i=0; i<fullWordHash.length; i++){
     var option_count = document.createElement("option");
     // optionタグのテキストを設定する
     option_count.text = i+1;
@@ -101,42 +105,39 @@
     option_count.value = i+1;
     targetWordCountSelect.appendChild(option_count);
   }
-  // 対象のwordsを生成
-  let words = new Array();
+  // 単語の数を絞り込み
   if(getParameterByName("target_word_count") != null){
-    // words の length が target_word_count になるまでランダムに追加
-    while(words.length < getParameterByName("target_word_count")){
-      const randomCount = Math.floor(Math.random() * defaultWords.length);
-      words.push(defaultWords[randomCount]);
-      defaultWords.splice(randomCount, 1);
+    // fullWordHash の length が target_word_count になるまでランダムに削除
+    while(fullWordHash.length > getParameterByName("target_word_count")){
+      const randomCount = Math.floor(Math.random() * fullWordHash.length);
+      fullWordHash.splice(randomCount, 1);
     }
 
     targetWordCountSelect.value = getParameterByName("target_word_count");
   } else {
-    words = defaultWords;
     targetWordCountSelect.value = targetWordCountSelect.length;
   }
 
   // タイピング対象の一覧作成
-  for(var i=0; i<words.length; i++){
+  for(var i=0; i<fullWordHash.length; i++){
     var tr_word = document.createElement("tr");
     var td_eng_lower = document.createElement("td");
     var td_eng_upper = document.createElement("td");
-    var td_ja = document.createElement("td");
-    td_eng_lower.textContent = words[i];
-    td_eng_upper.textContent = words[i].toUpperCase();
-    td_ja.textContent = defaultWordHash[words[i]];
+    var td_yomi = document.createElement("td");
+    var td_mean = document.createElement("td");
+    td_eng_lower.textContent = fullWordHash[i].name;
+    td_eng_upper.textContent = fullWordHash[i].name.toUpperCase();
+    td_yomi.textContent = fullWordHash[i].yomi;
+    td_mean.textContent = fullWordHash[i].meaninig;
     tr_word.appendChild(td_eng_lower);
     tr_word.appendChild(td_eng_upper);
-    tr_word.appendChild(td_ja);
+    tr_word.appendChild(td_yomi);
+    tr_word.appendChild(td_mean);
     targetWordTable.appendChild(tr_word);
   }
 
-
-  // デバッグ
-  console.log(words);
-
-  let word = words[Math.floor(Math.random() * words.length)];
+  let word;
+  let wordMeaning;
   let loc  // 変数宣言
   let score  // スコア格納
   let miss  // ミス格納
@@ -170,6 +171,7 @@
   let isSleepMode = false;
   let isNoMoreWord = false;
 
+  const targetMeaning = document.getElementById('targetMeaning');
   const target = document.getElementById('target');
   if(isUppercaseMode){
     // 大文字モードは最初の画面の文字も大文字にする。
@@ -188,7 +190,7 @@
 
   // 残り単語数表示
   const wordLeftCountLabel = document.getElementById('wordLeftCount');
-  wordLeftCountLabel.textContent = words.length;
+  wordLeftCountLabel.textContent = fullWordHash.length;
 
   // クリアした単語数
   const wordClearCountLabel = document.getElementById('wordClearCount');
@@ -200,6 +202,7 @@
   // GETパラメーターに「dark_mode=true」を付与すると実行される
   if(getParameterByName("dark_mode") === "true"){
     target.style.color = "white";
+    targetMeaning.style.color = "white";
     doneTarget.style.color = "#00FF00";
     document.body.style.background = "#000000";
 
@@ -254,9 +257,12 @@
     speedCPMLabel.textContent = speedCPM;
     speedWPMLabel.textContent = speedWPM;
     missLabel.textContent = miss;
-    word = words[Math.floor(Math.random() * words.length)];
+    const initRandom = Math.floor(Math.random() * fullWordHash.length);
+    word = fullWordHash[initRandom].name;
+    wordMeaning = fullWordHash[initRandom].meaninig;
 
     // タイピング単語を表示
+    targetMeaning.textContent = wordMeaning;
     if(isUppercaseMode){
       target.textContent = word.toUpperCase();
     } else {
@@ -265,10 +271,10 @@
 
     startTime = Date.now(); // Date.now 基準日から経過ミリ秒を計算
     // スタート時の単語の数
-    startWorsLengs = words.length;
+    startWorsLengs = fullWordHash.length;
 
-    wordLeftCountLabel.textContent = words.length;
-    wordClearCountLabel.textContent = startWorsLengs - words.length;
+    wordLeftCountLabel.textContent = fullWordHash.length;
+    wordClearCountLabel.textContent = startWorsLengs - fullWordHash.length;
 
     bar.animate(0);
 
@@ -282,7 +288,7 @@
       return;
     }
 
-    if(words.length == 0){
+    if(fullWordHash.length == 0){
       alert("残りの単語がありません。リロードしてください。");
       return;
     }
@@ -308,23 +314,29 @@
       // console.log('score'); // デバッグ用処理(コンソールにscoreと表示)
       loc++;
       // １単語正解
-      if(loc === word.length){
+      if(loc === word.length){ //
         // 正解した単語は削除する
-        words.splice(words.indexOf(word), 1);
-        wordLeftCountLabel.textContent = words.length;
-        wordClearCountLabel.textContent = startWorsLengs - words.length;
+        for (var index in fullWordHash) {
+          if(fullWordHash[index].name === word){
+            fullWordHash.splice(index, 1);
+          }
+        }
+        wordLeftCountLabel.textContent = fullWordHash.length;
+        wordClearCountLabel.textContent = startWorsLengs - fullWordHash.length;
 
-        bar.animate((startWorsLengs - words.length) / startWorsLengs);
+        bar.animate((startWorsLengs - fullWordHash.length) / startWorsLengs);
 
         // 用意されている単語をすべて正解した場合は終了する。
-        if(words.length == 0){
+        if(fullWordHash.length == 0){
           isNoMoreWord = true;
           score++;
           scoreLabel.textContent = score;
           return;
         }
 
-        word = words[Math.floor(Math.random() * words.length)];
+        const keyupRandom = Math.floor(Math.random() * fullWordHash.length);
+        word = fullWordHash[keyupRandom].name;
+        wordMeaning = fullWordHash[keyupRandom].meaninig;
         doneTarget.textContent = "";
         loc = 0;
       }
@@ -347,6 +359,7 @@
       doneTarget.textContent += word.charAt(loc-1);
       target.textContent = word.substring(loc);
     }
+    targetMeaning.textContent = wordMeaning;
   }
 
   /* 残り時間更新処理 */
@@ -360,7 +373,7 @@
     speedCPM = (score / (((Date.now() - startTime) / 1000) / 60)).toFixed(2);
     speedCPMLabel.textContent = speedCPM;
     // タイピング速度計算（経過分あたりの正解単語数）
-    speedWPM = ((startWorsLengs - words.length) / (((Date.now() - startTime) / 1000) / 60)).toFixed(2);
+    speedWPM = ((startWorsLengs - fullWordHash.length) / (((Date.now() - startTime) / 1000) / 60)).toFixed(2);
     speedWPMLabel.textContent = speedWPM;
 
     const timeoutId = setTimeout(() => {
@@ -379,6 +392,7 @@
 
       clearTimeout(timeoutId);
       doneTarget.textContent = "";
+      targetMeaning.textContent = "";
       timerLabel.textContent = '0.00';
       target.textContent = 'click here to continue..';
       if(isUppercaseMode){
@@ -393,13 +407,13 @@
     // 正答率算出 未入力時に分母が0になるため、0の時は正答率を0として表示する
     const accuracy = score + miss === 0 ? 0 : score / (score + miss) * 100;
     let results;
-    if(words.length == 0){
+    if(fullWordHash.length == 0){
       results = "おめでとうございます！！\nすべての単語をクリアしました。";
     } else {
       results = "残念！\n時間切れです。";
     }
     // alert(``)でないとscore等の数値が表示されないため注意。alert('')だと文字がそのまま表示される
-    alert(`${results}\n\n=== 結果 ===\nクリアした単語: ${startWorsLengs-words.length}個\n正解: ${score}文字\nミス: ${miss}文字\n正確度: ${accuracy.toFixed(2)}%\nタイピング速度: ${speedCPM} CPM / ${speedWPM} WPM`);
+    alert(`${results}\n\n=== 結果 ===\nクリアした単語: ${startWorsLengs-fullWordHash.length}個\n正解: ${score}文字\nミス: ${miss}文字\n正確度: ${accuracy.toFixed(2)}%\nタイピング速度: ${speedCPM} CPM / ${speedWPM} WPM`);
   }
 
 }
