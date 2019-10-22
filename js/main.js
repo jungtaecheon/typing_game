@@ -407,6 +407,11 @@
     if (timeLeft < 0 || isNoMoreWord == true){
       isPlaying = false;
 
+      // 残り時間がマイナスになるのを防止
+      if(timeLeft < 0){
+        timerLabel.textContent = '0.00';
+      }
+
       // 画面の更新を100ミリ秒遅らせる。遅らせることでタイマーが0秒になったら表示される
       // 画面の更新を1000ミリ秒遅らせる。遅らせることでプログレスバーがMAXまで表示される
       setTimeout(() => {
