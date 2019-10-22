@@ -108,7 +108,7 @@
   // デフォルトは15個
   const DEFAULT_WORD_COUNT = 15;
   targetWordCountSelect.value = DEFAULT_WORD_COUNT;
-  if(getParameterByName("target_word_count") != null){
+  if(getParameterByName("target_word_count") != null && getParameterByName("target_word_count") != "" && !isNaN(getParameterByName("target_word_count"))){
     // fullWordHash の length が target_word_count になるまでランダムに削除
     while(fullWordHash.length > getParameterByName("target_word_count")){
       const randomCount = Math.floor(Math.random() * fullWordHash.length);
@@ -160,7 +160,7 @@
 
   // 制限時間
   let playingTime = 30;
-  if(getParameterByName("play_time") != null){
+  if(getParameterByName("play_time") != null && getParameterByName("play_time") != "" && !isNaN(getParameterByName("play_time"))){
     playingTime = getParameterByName("play_time");
 
     const playTimeSelect = document.getElementById('playTimeSelect');
@@ -170,7 +170,7 @@
 
   // 大文字小文字モード
   let isUppercaseMode = false;
-  if(getParameterByName("case_mode") != null){
+  if(getParameterByName("case_mode") != null && getParameterByName("case_mode") != ""){
     isUppercaseMode = getParameterByName("case_mode") === "upperCase" ? true : false;
 
     const caseModeSelect = document.getElementById('caseModeSelect');
