@@ -105,6 +105,9 @@
     targetWordCountSelect.appendChild(option_count);
   }
   // 単語の数を絞り込み
+  // デフォルトは15個
+  const DEFAULT_WORD_COUNT = 15;
+  targetWordCountSelect.value = DEFAULT_WORD_COUNT;
   if(getParameterByName("target_word_count") != null){
     // fullWordHash の length が target_word_count になるまでランダムに削除
     while(fullWordHash.length > getParameterByName("target_word_count")){
@@ -114,7 +117,16 @@
 
     targetWordCountSelect.value = getParameterByName("target_word_count");
   } else {
-    targetWordCountSelect.value = targetWordCountSelect.length;
+      if (targetWordCountSelect.length > DEFAULT_WORD_COUNT){
+      // デフォルトの15個に絞る
+      while(fullWordHash.length > DEFAULT_WORD_COUNT){
+        const randomCount = Math.floor(Math.random() * fullWordHash.length);
+        fullWordHash.splice(randomCount, 1);
+      }
+    } else {
+      // 単語が15個も存在しない場合
+      targetWordCountSelect.value = targetWordCountSelect.length;
+    }
   }
 
   // タイピング対象の一覧作成
