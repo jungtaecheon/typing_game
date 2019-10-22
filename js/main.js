@@ -423,7 +423,7 @@
       results = "残念！\n時間切れです。";
     }
     // alert(``)でないとscore等の数値が表示されないため注意。alert('')だと文字がそのまま表示される
-    alert(`${results}\n\n=== 結果 ===\nクリアした単語: ${startWorsLengs-fullWordHash.length}個\n正解: ${score}文字\nミス: ${miss}文字\n正確度: ${accuracy.toFixed(2)}%\nタイピング速度: ${speedCPM} CPM / ${speedWPM} WPM`);
+    alert(`${results}\n\n=== 結果 ===\nクリアした単語: ${startWorsLengs-fullWordHash.length}個\n正解: ${score}文字\nミス: ${miss}文字\n正確度: ${accuracy}%\nタイピング速度: ${speedCPM} CPM / ${speedWPM} WPM`);
   }
 
 }
