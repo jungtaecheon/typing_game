@@ -80,6 +80,16 @@
     {"name":"log", "yomi":"ログ", "meaninig":"ログ／ログを取る"},
     {"name":"login", "yomi":"ログイン", "meaninig":"ログイン"},
   ];
+  // abc順にソート
+  fullWordHash.sort(
+    function(a,b){
+      var aName = a["name"];
+      var bName = b["name"];
+      if( aName < bName ) return -1;
+      if( aName > bName ) return 1;
+      return 0;
+    }
+  );
 
   const targetWordCountSelect = document.getElementById('targetWordCountSelect');
   const targetWordTable = document.getElementById('targetWordTable');
