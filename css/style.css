@@ -272,12 +272,11 @@ table tr{
   color: #00DD00;
   font-weight: bold;
 }
-.EnglishWord:hover{
-  /* 今の所いらない *
-/*  background-color: #d4f0fd;
+.EnglishWord{
+  background-color: #d4f0fd;
   color: #00DD00;
   font-weight: bold;
-*/}
+}
 .WordExplan{
   background-color: #CCCCCC ;
   color: #CCCCCC  ;
