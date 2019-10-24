@@ -301,6 +301,7 @@
       if(result){
         // リロード
         location.reload();
+        return;
       }else{
         return;
       }
