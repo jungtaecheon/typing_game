@@ -331,17 +331,32 @@
           if(fullWordHash[index].name === word){
             // 正解した単語は、単語一覧に追加
             var tr_word = document.createElement("tr");
+
             var td_eng_lower = document.createElement("td");
             td_eng_lower.className = "EnglishWord";
+            var a_eng_lower = document.createElement("a");
+            a_eng_lower.href = "https://ejje.weblio.jp/content/" + fullWordHash[index].name;
+            a_eng_lower.target = "_blank";
+
             var td_eng_upper = document.createElement("td");
             td_eng_upper.className = "EnglishWord";
+            var a_eng_upper = document.createElement("a");
+            a_eng_upper.href = "https://ejje.weblio.jp/content/" + fullWordHash[index].name.toUpperCase();
+            a_eng_upper.target = "_blank";
+
             var td_yomi = document.createElement("td");
             td_yomi.className = "WordExplan";
+
             var td_mean = document.createElement("td");
             td_mean.className = "WordExplan";
 
-            td_eng_lower.textContent = fullWordHash[index].name;
-            td_eng_upper.textContent = fullWordHash[index].name.toUpperCase();
+            // https://www.ei-navi.jp/dictionary/content/man/
+
+            a_eng_lower.textContent = fullWordHash[index].name;
+            a_eng_upper.textContent = fullWordHash[index].name.toUpperCase();
+            td_eng_lower.appendChild(a_eng_lower);
+            td_eng_upper.appendChild(a_eng_upper);
+
             td_yomi.textContent = fullWordHash[index].yomi;
             td_mean.textContent = fullWordHash[index].meaninig;
             tr_word.appendChild(td_eng_lower);
