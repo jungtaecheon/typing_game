@@ -294,12 +294,16 @@
     });
 
     if(fullWordHash.length == 0){
-      alert("残りの単語がありません。\n設定画面でリセットするかブラウザからリロードしてください。");
-      return;
+      const result = confirm("残りの単語がありません。\nタイピングの単語をリセットしますか？？");
+      if(result){
+        // リロード
+        location.reload();
+      }else{
+        return;
+      }
     }
 
     sleep(sleepTime, function() {
-      // console.log(`${sleepTime}秒経過しました！`);
       // 処理開始
       init();
     });
