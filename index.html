@@ -15,8 +15,12 @@
 
     <span id="targetMeaning"></span>
     <br>
-    <span id="doneTarget"></span><span id="target">click here to start!</span>
+    <span id="doneTarget"></span><span id="target">click to start!</span>
     <div id="progressBar"></div>
+
+    <br>
+    <a id="startGameButton" href="javascript:void(0);" class="btn-sf-like">スタート</a>
+    <a id="openModal" href="javascript:void(0);" class="btn-sf-like">設定を開く</a>
 
     <p class="info">
       残った単語 : <span id="wordLeftCount">0</span> 個
@@ -36,25 +40,14 @@
       WPM (1分あたりの単語数) : <span id="speed_WPM">0.00</span>
     </p>
 
-    <a id="openModal" href="javascript:void(0);" class="btn-sf-like">設定画面を開く</a>
     <br>
     <br>
     <br>
     <br>
 
-    <script>
-      function switchTable(){
-        var tableDiv = document.getElementById("tableDiv");
-        if(tableDiv.style.display === "none"){
-          tableDiv.style.display = "block";
-        }else{
-          tableDiv.style.display = "none";
-        }
-      }
-    </script>
-    <a class="info" href="javascript:void(0)" onclick="switchTable()">対象の単語一覧 (Click Me)</a>
-    <br>
     <div id="tableDiv" style="display: none;">
+    <a class="infoBig">クリア単語リスト</a>
+    <br>
       <table id="targetWordTable" class="info">
         <thead>
         <tr><th>小文字</th><th>大文字</th><th>読み方</th><th>意味</th></tr>
@@ -70,14 +63,14 @@
         <a>ゲーム設定 (Game Settings)</a>
         <hr>
         <!-- ダークモード -->
-        <a>リロード</a>
+        <a>リセット (Reset)</a>
         <br>
         <form action="./index.html" method="get">
           <div>
             <input name="dark_mode" value="true" type="hidden">
           </div>
           <div>
-            <button id="darkButton" class="btn-right-radius">ダークモードに切り替える</button>
+            <button id="darkButton" class="btn-right-radius">ダークモード (Dark)</button>
           </div>
         </form>
         <br>
@@ -87,7 +80,7 @@
             <input name="dark_mode" value="false" type="hidden">
           </div>
           <div>
-            <button id="normalButton" class="btn-right-radius">ノーマルモードに切り替える</button>
+            <button id="normalButton" class="btn-right-radius">ノーマルモード (Normal)</button>
           </div>
         </form>
         <br>
@@ -133,7 +126,7 @@
           <br>
           <br>
 
-          <button id="timeFormButton" class="btn-flat-horizontal-border">てきよう (Apply Settings)</button>
+          <button id="timeFormButton" class="btn-flat-horizontal-border">適用する (Apply Settings)</button>
           <br>
           <br>
         </form>

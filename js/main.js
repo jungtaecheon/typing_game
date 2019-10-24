@@ -61,7 +61,7 @@
     {"name":"remove", "yomi":"リムーブ", "meaninig":"削除する"},
     {"name":"commit", "yomi":"コミット", "meaninig":"コミットする、（処理などを）確定する"},
     {"name":"cookie", "yomi":"クッキー", "meaninig":"クッキー"},
-    {"name":"define", "yomi":"ディファイン", "meaninig":"定義する"},
+    {"name":"apply", "yomi":"アプライ", "meaninig":"適用する"},
     {"name":"domain", "yomi":"ドメイン", "meaninig":"ドメイン"},
     {"name":"define", "yomi":"ディファイン", "meaninig":"定義する"},
     {"name":"error", "yomi":"エラー", "meaninig":"エラー"},
@@ -129,24 +129,6 @@
     }
   }
 
-  // タイピング対象の一覧作成
-  for(var i=0; i<fullWordHash.length; i++){
-    var tr_word = document.createElement("tr");
-    var td_eng_lower = document.createElement("td");
-    var td_eng_upper = document.createElement("td");
-    var td_yomi = document.createElement("td");
-    var td_mean = document.createElement("td");
-    td_eng_lower.textContent = fullWordHash[i].name;
-    td_eng_upper.textContent = fullWordHash[i].name.toUpperCase();
-    td_yomi.textContent = fullWordHash[i].yomi;
-    td_mean.textContent = fullWordHash[i].meaninig;
-    tr_word.appendChild(td_eng_lower);
-    tr_word.appendChild(td_eng_upper);
-    tr_word.appendChild(td_yomi);
-    tr_word.appendChild(td_mean);
-    targetWordTable.appendChild(tr_word);
-  }
-
   let word;
   let wordMeaning;
   let loc  // 変数宣言
@@ -210,6 +192,9 @@
 
   const darkButton = document.getElementById('darkButton');
   const normalButton = document.getElementById('normalButton');
+
+  // ゲームスタートボタン
+  const startGameButton = document.getElementById('startGameButton');
 
   // ダークモード
   // GETパラメーターに「dark_mode=true」を付与すると実行される
@@ -297,15 +282,19 @@
     updateTimer();
   }
 
-  // クリックイベント
-  target.addEventListener('click', () => {
+  function startGame(){
     // プレイ中のクリック、もしくは、モード切り替えのためのクリックは無効
     if(isPlaying === true){
       return;
     }
 
+    // 画面を一番上に移動させる。
+    $(function(){
+      $("body, html").animate({scrollTop:0}, 500, "swing");
+    });
+
     if(fullWordHash.length == 0){
-      alert("残りの単語がありません。\n設定画面からリロードしてください。");
+      alert("残りの単語がありません。\n設定画面でリセットするかブラウザからリロードしてください。");
       return;
     }
 
@@ -314,6 +303,15 @@
       // 処理開始
       init();
     });
+  }
+
+  // startGameボタン
+  startGameButton.addEventListener('click', () => {
+    startGame();
+  });
+  // クリックイベント
+  target.addEventListener('click', () => {
+    startGame();
   });
 
   // キー入力イベント
@@ -324,16 +322,34 @@
       return;
     }
 
-    // console.log(e.key); // デバッグ用処理(コンソールに入力結果を表示)
     // １文字正解
     if(e.key === word[loc]){
-      // console.log('score'); // デバッグ用処理(コンソールにscoreと表示)
       loc++;
       // １単語正解
-      if(loc === word.length){ //
-        // 正解した単語は削除する
+      if(loc === word.length){
         for (var index in fullWordHash) {
           if(fullWordHash[index].name === word){
+            // 正解した単語は、単語一覧に追加
+            var tr_word = document.createElement("tr");
+            var td_eng_lower = document.createElement("td");
+            td_eng_lower.className = "EnglishWord";
+            var td_eng_upper = document.createElement("td");
+            td_eng_upper.className = "EnglishWord";
+            var td_yomi = document.createElement("td");
+            td_yomi.className = "WordExplan";
+            var td_mean = document.createElement("td");
+            td_mean.className = "WordExplan";
+
+            td_eng_lower.textContent = fullWordHash[index].name;
+            td_eng_upper.textContent = fullWordHash[index].name.toUpperCase();
+            td_yomi.textContent = fullWordHash[index].yomi;
+            td_mean.textContent = fullWordHash[index].meaninig;
+            tr_word.appendChild(td_eng_lower);
+            tr_word.appendChild(td_eng_upper);
+            tr_word.appendChild(td_yomi);
+            tr_word.appendChild(td_mean);
+            targetWordTable.appendChild(tr_word);
+            // 正解した単語は削除する
             fullWordHash.splice(index, 1);
           }
         }
@@ -412,6 +428,17 @@
         timerLabel.textContent = '0.00';
       }
 
+      // クリア単語リストを表示
+      var tableDiv = document.getElementById("tableDiv");
+      tableDiv.style.display = "block";
+
+      // 終了したらスクロールを一番下に移動させる。（クリア単語リストを見せる）
+      $(function(){
+        $('html, body').animate({
+          scrollTop: $(document).height()
+        },1000);
+      });
+
       // 画面の更新を100ミリ秒遅らせる。遅らせることでタイマーが0秒になったら表示される
       // 画面の更新を1000ミリ秒遅らせる。遅らせることでプログレスバーがMAXまで表示される
       setTimeout(() => {
@@ -421,7 +448,7 @@
       clearTimeout(timeoutId);
       doneTarget.textContent = "";
       targetMeaning.textContent = "";
-      target.textContent = 'click here to continue..';
+      target.textContent = 'click to continue..';
       if(isUppercaseMode){
         // 大文字モードの場合は、説明も大文字で表示。
         target.textContent = target.textContent.toUpperCase();

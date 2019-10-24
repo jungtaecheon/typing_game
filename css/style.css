@@ -263,18 +263,25 @@ table{
   border-spacing: 0;
   width: 100%;
 }
-
 table tr{
   border-bottom: solid 1px #eee;
   cursor: pointer;
 }
-
-table tr:hover{
+.WordExplan:hover{
   background-color: #d4f0fd;
   color: #00DD00;
   font-weight: bold;
 }
-
+.EnglishWord:hover{
+  /* 今の所いらない *
+/*  background-color: #d4f0fd;
+  color: #00DD00;
+  font-weight: bold;
+*/}
+.WordExplan{
+  background-color: #CCCCCC ;
+  color: #CCCCCC  ;
+}
 table th,table td{
   text-align: center;
   width: 25%;
