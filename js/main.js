@@ -428,27 +428,26 @@
         timerLabel.textContent = '0.00';
       }
 
-      // クリア単語リストを表示
-      var tableDiv = document.getElementById("tableDiv");
-      tableDiv.style.display = "block";
-
-      // 終了したらスクロールを一番下に移動させる。（クリア単語リストを見せる）
-      $(function(){
-        $('html, body').animate({
-          scrollTop: $(document).height()
-        },1000);
-      });
-
       // 画面の更新を100ミリ秒遅らせる。遅らせることでタイマーが0秒になったら表示される
       // 画面の更新を1000ミリ秒遅らせる。遅らせることでプログレスバーがMAXまで表示される
       setTimeout(() => {
         showResult();
+
+        // クリア単語リストを表示
+        var tableDiv = document.getElementById("tableDiv");
+        tableDiv.style.display = "block";
+        // タイピングが終了したらスクロールを一番下に移動させる。（クリア単語リストを見せる）
+        $(function(){
+          $('html, body').animate({
+            scrollTop: $(document).height()
+          },2000);
+        });
       }, 1000);
 
       clearTimeout(timeoutId);
       doneTarget.textContent = "";
       targetMeaning.textContent = "";
-      target.textContent = 'click to continue..';
+      target.textContent = isNoMoreWord ? 'Congratulations!!!' : 'Click to continue..';
       if(isUppercaseMode){
         // 大文字モードの場合は、説明も大文字で表示。
         target.textContent = target.textContent.toUpperCase();
