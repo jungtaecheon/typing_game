@@ -148,6 +148,9 @@
     const playTimeSelect = document.getElementById('playTimeSelect');
     playTimeSelect.value = playingTime;
   }
+  // 制限時間なし
+  let notLimitTimeMode = (playingTime == -999);
+
   const timeLimit = playingTime * 1000; // ミリ秒 * 1000
 
   // 大文字小文字モード
@@ -181,7 +184,7 @@
 
   // 残り時間表示
   const timerLabel = document.getElementById('timer');
-  timerLabel.textContent = playingTime + ".00";
+  timerLabel.textContent = !notLimitTimeMode ? playingTime + ".00" : "∞";
 
   // 残り単語数表示
   const wordLeftCountLabel = document.getElementById('wordLeftCount');
@@ -252,7 +255,7 @@
     speedWPM = 0;
     miss = 0;
     accuracy = 0;
-    timerLabel.textContent = '0.00';
+    timerLabel.textContent = !notLimitTimeMode ? playingTime + ".00" : "∞";
     scoreLabel.textContent = score;
     speedCPMLabel.textContent = speedCPM;
     speedWPMLabel.textContent = speedWPM;
@@ -294,7 +297,7 @@
     });
 
     if(fullWordHash.length == 0){
-      const result = confirm("残りの単語がありません。\nタイピングの単語をリセットしますか？？");
+      const result = confirm("すべての単語をクリアしました。\nタイピング単語をリセットしますか？？");
       if(result){
         // リロード
         location.reload();
@@ -425,7 +428,7 @@
     /* 残り時間を計算　開始時間　－ 制限時間 - 基準日からの経過時間 */
     const timeLeft = startTime + timeLimit - Date.now();
     /* 残り時間表示(ミリ秒→秒に変更。toFixedで少数点以下桁数調整(今回は2桁)) */
-    timerLabel.textContent = (timeLeft / 1000).toFixed(2);
+    timerLabel.textContent = !notLimitTimeMode ? (timeLeft / 1000).toFixed(2) : "∞";
 
     // タイピング速度計算（経過分あたりの正解文字数）
     speedCPM = (score / (((Date.now() - startTime) / 1000) / 60)).toFixed(2);
@@ -439,11 +442,11 @@
     },10);
 
     /* 残り時間が0になったらタイマーの更新をストップし、ゲーム終了 */
-    if (timeLeft < 0 || isNoMoreWord == true){
+    if ((!notLimitTimeMode && timeLeft < 0) || isNoMoreWord == true){
       isPlaying = false;
 
       // 残り時間がマイナスになるのを防止
-      if(timeLeft < 0){
+      if(!notLimitTimeMode && timeLeft < 0){
         timerLabel.textContent = '0.00';
       }
 
