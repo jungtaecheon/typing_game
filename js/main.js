@@ -108,7 +108,10 @@
   // デフォルトは15個
   const DEFAULT_WORD_COUNT = 15;
   targetWordCountSelect.value = DEFAULT_WORD_COUNT;
-  if(getParameterByName("target_word_count") != null && getParameterByName("target_word_count") != "" && !isNaN(getParameterByName("target_word_count"))){
+  if(getParameterByName("target_word_count") != null &&
+    getParameterByName("target_word_count") != "" &&
+    !isNaN(getParameterByName("target_word_count")) &&
+    getParameterByName("target_word_count") > 0){
     // fullWordHash の length が target_word_count になるまでランダムに削除
     while(fullWordHash.length > getParameterByName("target_word_count")){
       const randomCount = Math.floor(Math.random() * fullWordHash.length);
